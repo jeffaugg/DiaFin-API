@@ -1,7 +1,7 @@
+import { User } from "@prisma/client";
 import { prisma } from "../../../shared/prisma/PrismaService";
 import { UserDTOType } from "../dtos/UserDTO";
-import { IUserRepository } from "./interface/IUserRepository";
-import { User } from "@prisma/client";
+import { IUserRepository, UserFull } from "./interface/IUserRepository";
 
 class UserRepository implements IUserRepository {
   async create(data: UserDTOType) {
@@ -20,6 +20,20 @@ class UserRepository implements IUserRepository {
     if (!user) {
       return null;
     }
+
+    return user;
+  }
+
+  async findById(id: number): Promise<UserFull | null> {
+    const user = await prisma.user.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        financialProfile: true,
+      },
+    });
+
     return user;
   }
 }

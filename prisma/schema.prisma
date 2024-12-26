@@ -22,6 +22,9 @@ model User {
   salary           Float
   reserve          Float
   financialProfile FinancialProfile?
+  expense          Expense[]
+  dailyBudget      DailyBudget[]
+  category         Category[]
 
   @@map("users")
 }
@@ -34,4 +37,42 @@ model FinancialProfile {
   user        User   @relation(fields: [userId], references: [id])
 
   @@map("financial_profiles")
+}
+
+model Expense {
+  id            Int         @id @default(autoincrement())
+  value         Float
+  date          DateTime
+  description   String
+  categoryId    Int
+  userId        Int
+  dailyBudgetId Int
+  user          User        @relation(fields: [userId], references: [id])
+  dailyBudget   DailyBudget @relation(fields: [dailyBudgetId], references: [id])
+  category      Category    @relation(fields: [categoryId], references: [id])
+
+  @@map("expenses")
+}
+
+model DailyBudget {
+  id      Int       @id @default(autoincrement())
+  date    DateTime
+  value   Float
+  status  String
+  userId  Int
+  user    User      @relation(fields: [userId], references: [id])
+  expense Expense[]
+
+  @@map("daily_budgets")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @unique
+  name        String
+  description String
+  user        User      @relation(fields: [userId], references: [id])
+  expense     Expense[]
+
+  @@map("categories")
 }

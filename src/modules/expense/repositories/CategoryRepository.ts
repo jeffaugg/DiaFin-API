@@ -4,10 +4,11 @@ import { CategoryDTOType } from "../dtos/CategoryDTO";
 import { prisma } from "../../../shared/prisma/PrismaService";
 
 class CategoryRepository implements ICategoryRepository {
-  async findByName(name: string): Promise<Category | null> {
-    const category = prisma.category.findUnique({
+  async findByName(name: string, userId: number): Promise<Category | null> {
+    const category = prisma.category.findFirst({
       where: {
         name,
+        userId,
       },
     });
 
@@ -17,10 +18,11 @@ class CategoryRepository implements ICategoryRepository {
 
     return category;
   }
-  async findById(id: number): Promise<Category | null> {
+  async findById(id: number, userId: number): Promise<Category | null> {
     const category = prisma.category.findUnique({
       where: {
         id,
+        userId,
       },
     });
 
@@ -30,15 +32,21 @@ class CategoryRepository implements ICategoryRepository {
 
     return category;
   }
-  async delete(id: number): Promise<void> {
-    prisma.category.delete({
+  async delete(id: number, userId: number): Promise<void> {
+    await prisma.category.delete({
       where: {
         id,
+        userId,
       },
     });
   }
-  async list(): Promise<Category[]> {
-    return prisma.category.findMany();
+
+  async list(id: number): Promise<Category[]> {
+    return prisma.category.findMany({
+      where: {
+        userId: id,
+      },
+    });
   }
   async create(data: CategoryDTOType): Promise<Category> {
     return await prisma.category.create({

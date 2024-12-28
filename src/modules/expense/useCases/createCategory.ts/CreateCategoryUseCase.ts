@@ -9,6 +9,7 @@ export class CreateCategoryUseCase {
   async execute(data: CategoryDTOType, userId: number): Promise<Category> {
     const categoryAlreadyExists = await this.categoryRepository.findByName(
       data.name,
+      userId,
     );
 
     if (categoryAlreadyExists) {

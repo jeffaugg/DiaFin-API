@@ -69,10 +69,11 @@ model DailyBudget {
 model Category {
   id          Int       @id @default(autoincrement())
   userId      Int
-  name        String    @unique
+  name        String
   description String
   user        User      @relation(fields: [userId], references: [id])
   expense     Expense[]
 
+  @@unique([id, userId])
   @@map("categories")
 }

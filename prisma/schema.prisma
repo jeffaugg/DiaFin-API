@@ -69,7 +69,7 @@ model DailyBudget {
 model Category {
   id          Int       @id @default(autoincrement())
   userId      Int       @unique
-  name        String
+  name        String    @unique
   description String
   user        User      @relation(fields: [userId], references: [id])
   expense     Expense[]

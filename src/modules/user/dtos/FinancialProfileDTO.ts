@@ -1,7 +1,7 @@
 import z from "zod";
 
 export const FinancialProfileDTO = z.object({
-  name: z.string().min(1, { message: "Name is required" }),
+  name: z.enum(["conservative", "moderate", "aggressive"]).default("moderate"),
   description: z
     .string()
     .min(1, { message: "Description is required" })

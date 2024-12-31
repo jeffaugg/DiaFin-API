@@ -19,7 +19,7 @@ model User {
   email            String            @unique
   password         String
   age              Int
-  salary           Float
+  balance          Float             @default(0.00)
   reserve          Float
   financialProfile FinancialProfile?
   expense          Expense[]
@@ -42,7 +42,7 @@ model FinancialProfile {
 model Expense {
   id            Int         @id @default(autoincrement())
   value         Float
-  date          DateTime
+  date          DateTime    @default(now())
   description   String
   categoryId    Int
   userId        Int

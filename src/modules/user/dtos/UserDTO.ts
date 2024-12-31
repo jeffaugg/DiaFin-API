@@ -7,10 +7,7 @@ export const UserDTO = z.object({
     .string()
     .min(6, { message: "Password must be at least 6 characters long" }),
   age: z.number().int().positive({ message: "Age is required" }),
-  salary: z
-    .number()
-    .positive({ message: "Salary is required" })
-    .transform((value) => parseFloat(value.toFixed(2))),
+  balance: z.number().transform((value) => parseFloat(value.toFixed(2))),
   reserve: z
     .number()
     .positive({ message: "Reserve is required" })

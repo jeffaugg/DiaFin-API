@@ -14,4 +14,19 @@ export const UserDTO = z.object({
     .transform((value) => parseFloat(value.toFixed(2))),
 });
 
+export const userResponse = z.object({
+  id: z.number().int().positive(),
+  name: z.string(),
+  email: z.string(),
+  age: z.number().int().positive(),
+  balance: z.number(),
+  reserve: z.number(),
+  financialProfile: z.object({
+    id: z.number().int().positive(),
+    name: z.enum(["conservative", "moderate", "aggressive"]),
+    description: z.string(),
+    userId: z.number().int().positive(),
+  }),
+});
+
 export type UserDTOType = z.infer<typeof UserDTO>;

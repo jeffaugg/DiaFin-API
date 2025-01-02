@@ -9,4 +9,8 @@ export const FinancialProfileDTO = z.object({
   userId: z.number().int().positive({ message: "User ID is required" }),
 });
 
+export const financialProfileResponse = FinancialProfileDTO.extend({
+  id: z.number().int().positive(),
+});
+
 export type FinancialProfileDTOType = z.infer<typeof FinancialProfileDTO>;

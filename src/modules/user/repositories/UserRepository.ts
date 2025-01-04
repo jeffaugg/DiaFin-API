@@ -4,6 +4,15 @@ import { UserDTOType } from "../dtos/UserDTO";
 import { IUserRepository, UserFull } from "./interface/IUserRepository";
 
 class UserRepository implements IUserRepository {
+  async update(user: User): Promise<User> {
+    return await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: user,
+    });
+  }
+
   async create(data: UserDTOType) {
     return await prisma.user.create({
       data,

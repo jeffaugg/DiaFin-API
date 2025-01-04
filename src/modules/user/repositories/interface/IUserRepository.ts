@@ -6,6 +6,7 @@ export type UserFull = User & {
 };
 interface IUserRepository {
   create(data: UserDTOType): Promise<User>;
+  update(user: User): Promise<User>;
   findByEmail(email: string): Promise<User | null>;
   findById(id: number): Promise<UserFull | null>;
 }

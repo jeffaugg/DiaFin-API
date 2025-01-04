@@ -26,7 +26,7 @@ export async function userRoutes(app: FastifyInstance) {
         body: UserDTO,
         response: {
           201: userResponse.omit({ financialProfile: true }),
-          400: z.object({
+          409: z.object({
             statusCode: z.literal(409),
             message: z.literal("User already exists"),
           }),
@@ -49,7 +49,7 @@ export async function userRoutes(app: FastifyInstance) {
           200: z.object({
             userToken: z.string(),
           }),
-          400: z.object({
+          401: z.object({
             statusCode: z.literal(401),
             message: z.literal("Username or password does not exist"),
           }),
@@ -70,7 +70,7 @@ export async function userRoutes(app: FastifyInstance) {
         response: {
           200: userResponse,
           404: z.object({
-            statusCode: z.literal(404),
+            status: z.string(),
             message: z.literal("User not found"),
           }),
         },
@@ -91,8 +91,8 @@ export async function userRoutes(app: FastifyInstance) {
         body: FinancialProfileDTO,
         response: {
           201: financialProfileResponse,
-          400: z.object({
-            statusCode: z.literal(409),
+          409: z.object({
+            status: z.string(),
             message: z.literal("Financial profile already exists"),
           }),
         },

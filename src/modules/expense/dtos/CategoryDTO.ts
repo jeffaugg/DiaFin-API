@@ -9,4 +9,7 @@ export const CategoryDTO = z.object({
   userId: z.number().int().positive({ message: "User ID is required" }),
 });
 
+export const categoryResponse = CategoryDTO.extend({
+  id: z.number().int().positive(),
+});
 export type CategoryDTOType = z.infer<typeof CategoryDTO>;

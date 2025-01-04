@@ -4,7 +4,10 @@ import { isAuthenticate } from "../../middlewares/isAuthenticate";
 import { ShowCategoriesFactory } from "../../../../modules/expense/factories/ShowCategoriesFactory";
 import { FindCategoryByIdFactory } from "../../../../modules/expense/factories/FindCategoryByIdFactory";
 import { DeleteCategoryFactory } from "../../../../modules/expense/factories/DeleteCategoryFactory";
-import { CategoryDTO } from "../../../../modules/expense/dtos/CategoryDTO";
+import {
+  CategoryDTO,
+  categoryResponse,
+} from "../../../../modules/expense/dtos/CategoryDTO";
 import z from "zod";
 
 const createCategoryController = CreateCategoryFactory.create();
@@ -20,9 +23,9 @@ export async function categoryRoutes(app: FastifyInstance) {
         description: "Create category",
         body: CategoryDTO.omit({ userId: true }),
         response: {
-          201: CategoryDTO,
-          400: z.object({
-            statusCode: z.literal(400),
+          201: categoryResponse,
+          409: z.object({
+            status: z.string(),
             message: z.literal("Category already exists"),
           }),
         },
@@ -41,7 +44,7 @@ export async function categoryRoutes(app: FastifyInstance) {
         tags: ["Category"],
         description: "List all categories",
         response: {
-          200: z.array(CategoryDTO),
+          200: z.array(categoryResponse),
         },
       },
       preHandler: [isAuthenticate],
@@ -58,10 +61,10 @@ export async function categoryRoutes(app: FastifyInstance) {
         tags: ["Category"],
         description: "Find category by id",
         response: {
-          200: CategoryDTO,
+          200: categoryResponse,
           404: z
             .object({
-              statusCode: z.literal(404),
+              status: z.string(),
               message: z.literal("Category not found"),
             })
             .describe("Category not found"),
@@ -80,10 +83,11 @@ export async function categoryRoutes(app: FastifyInstance) {
       schema: {
         tags: ["Category"],
         description: "Delete category",
+        params: z.object({ id: z.string() }),
         response: {
           200: z.object({ message: z.literal("Category deleted") }),
           404: z.object({
-            statusCode: z.literal(404),
+            status: z.string(),
             message: z.literal("Category not found"),
           }),
         },

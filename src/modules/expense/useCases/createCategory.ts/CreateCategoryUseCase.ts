@@ -13,7 +13,7 @@ export class CreateCategoryUseCase {
     );
 
     if (categoryAlreadyExists) {
-      throw new AppError("Category already exists", 400);
+      throw new AppError("Category already exists", 409);
     }
 
     const categoryData = { ...data, userId };

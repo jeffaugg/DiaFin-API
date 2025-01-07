@@ -27,7 +27,7 @@ export async function userRoutes(app: FastifyInstance) {
         response: {
           201: userResponse.omit({ financialProfile: true }),
           409: z.object({
-            statusCode: z.literal(409),
+            status: z.string(),
             message: z.literal("User already exists"),
           }),
         },
@@ -50,7 +50,7 @@ export async function userRoutes(app: FastifyInstance) {
             userToken: z.string(),
           }),
           401: z.object({
-            statusCode: z.literal(401),
+            status: z.string(),
             message: z.literal("Username or password does not exist"),
           }),
         },

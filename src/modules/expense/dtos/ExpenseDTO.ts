@@ -8,7 +8,7 @@ export const ExpenseDTO = z.object({
 
 export const expenseResponse = ExpenseDTO.extend({
   id: z.number().int().positive(),
-  date: z.string(),
+  date: z.date(),
   userId: z.number().int().positive(),
   dailyBudgetId: z.number().int().positive(),
 });

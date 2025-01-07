@@ -51,6 +51,7 @@ model Expense {
   dailyBudget   DailyBudget @relation(fields: [dailyBudgetId], references: [id])
   category      Category    @relation(fields: [categoryId], references: [id])
 
+  @@unique([id, userId])
   @@map("expenses")
 }
 

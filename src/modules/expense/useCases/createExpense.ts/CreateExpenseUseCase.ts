@@ -8,14 +8,14 @@ import { IDailyBudgetRepository } from "../../repositories/interface/IDailyBudge
 import { ReturnDailyBudgetUseCase } from "../createDailyBudget/ReturnDailyBudgetUseCase";
 
 export class CreateExpenseUseCase {
-  private dailyBudgetValueService: ReturnDailyBudgetUseCase;
+  private returnDailyBudgetUseCase: ReturnDailyBudgetUseCase;
   constructor(
     private expenseRepository: IExpenseRepository,
     private categoryRepository: ICategoryRepository,
     private userRepository: IUserRepository,
     private dailyBudgetRepository: IDailyBudgetRepository,
   ) {
-    this.dailyBudgetValueService = new ReturnDailyBudgetUseCase(
+    this.returnDailyBudgetUseCase = new ReturnDailyBudgetUseCase(
       this.dailyBudgetRepository,
       this.userRepository,
     );
@@ -37,22 +37,20 @@ export class CreateExpenseUseCase {
       throw new AppError("User not found", 404);
     }
 
-    const dailyBudget = await this.dailyBudgetValueService.execute(userId);
+    const dailyBudget = await this.returnDailyBudgetUseCase.execute(userId);
 
     if (user.balance < data.value) {
       throw new AppError("Insufficient balance", 400);
     }
 
     if (data.value > dailyBudget.value) {
-      throw new AppError(
-        `Value greater than daily budget: ${dailyBudget.value} `,
-        400,
-      );
+      throw new AppError(`Value greater than daily budget`, 400);
     }
 
     dailyBudget.value -= data.value;
     user.balance -= data.value;
-    this.userRepository.update(user);
+    const { financialProfile, ...simpleUser } = user;
+    this.userRepository.update(simpleUser);
     this.dailyBudgetRepository.update(dailyBudget);
 
     const expense = await this.expenseRepository.create({

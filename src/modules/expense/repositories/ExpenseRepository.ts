@@ -14,6 +14,20 @@ class ExpenseRepository implements IExpenseRepository {
       data,
     });
   }
+
+  async update(
+    id: number,
+    userId: number,
+    data: ExpenseDTOType,
+  ): Promise<Expense> {
+    return await prisma.expense.update({
+      where: {
+        id,
+        userId,
+      },
+      data,
+    });
+  }
   async findById(id: number, userId: number): Promise<Expense | null> {
     const expense = prisma.expense.findUnique({
       where: {

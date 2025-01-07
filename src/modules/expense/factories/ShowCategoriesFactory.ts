@@ -1,6 +1,6 @@
 import { CategoryRepository } from "../repositories/CategoryRepository";
-import { ShowCategoriesController } from "../useCases/showCategories.ts/ShowCategoriesController";
-import { ShowCategoriesUseCase } from "../useCases/showCategories.ts/ShowCategoriesUseCase";
+import { ShowCategoriesController } from "../useCases/showCategories/ShowCategoriesController";
+import { ShowCategoriesUseCase } from "../useCases/showCategories/ShowCategoriesUseCase";
 
 export class ShowCategoriesFactory {
   static create() {

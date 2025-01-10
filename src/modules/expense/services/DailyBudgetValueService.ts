@@ -1,27 +1,24 @@
-import { differenceInDays, endOfMonth } from "date-fns";
+import { IDailyBudgetRepository } from "../repositories/interface/IDailyBudgetRepository";
 import { AppError } from "../../../config/erro/AppError";
-import { UserRepository } from "../../user/repositories/UserRepository";
 
 export class DailyBudgetValueService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(private dailyBudgetRepository: IDailyBudgetRepository) {}
 
-  async execute(userId: number): Promise<number> {
-    const user = await this.userRepository.findById(userId);
+  async adjustValue(userId: number, value: number): Promise<number> {
+    const dailyBudget = await this.dailyBudgetRepository.existsToday(userId);
 
-    if (!user) {
-      throw new AppError("Usuário não encontrado", 404);
+    if (!dailyBudget) {
+      throw new AppError("Daily budget not found", 404);
     }
 
-    const today = new Date();
-    const lastDayOfMonth = endOfMonth(today);
+    const newValue = dailyBudget.value + value;
 
-    const daysRemaining = Math.max(1, differenceInDays(lastDayOfMonth, today));
-
-    if (user.balance === undefined || user.balance === null) {
-      throw new AppError("O saldo do usuário não está definido", 409);
+    if (newValue < 0) {
+      throw new AppError("Insufficient daily budget", 400);
     }
-    const dailyValue = user.balance / daysRemaining;
 
-    return dailyValue;
+    await this.dailyBudgetRepository.ajustValue(dailyBudget.id, value);
+
+    return dailyBudget.value;
   }
 }

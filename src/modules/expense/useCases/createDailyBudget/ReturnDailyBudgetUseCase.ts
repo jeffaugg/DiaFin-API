@@ -2,10 +2,10 @@ import { DailyBudget } from "@prisma/client";
 import { IDailyBudgetRepository } from "../../repositories/interface/IDailyBudgetRepository";
 import { UserRepository } from "../../../user/repositories/UserRepository";
 import { AppError } from "../../../../config/erro/AppError";
-import { DailyBudgetValueService } from "../../services/DailyBudgetValueService";
+import { DailyBudgetCalculatorService } from "../../services/DailyBudgetCalculatorService";
 
 export class ReturnDailyBudgetUseCase {
-  private daylyBudgetValueService!: DailyBudgetValueService;
+  private daylyBudgetValueService!: DailyBudgetCalculatorService;
   constructor(
     private dailyBudgetRepository: IDailyBudgetRepository,
     private userRepository: UserRepository,
@@ -24,7 +24,7 @@ export class ReturnDailyBudgetUseCase {
       throw new AppError("User not found", 404);
     }
 
-    this.daylyBudgetValueService = new DailyBudgetValueService(
+    this.daylyBudgetValueService = new DailyBudgetCalculatorService(
       this.userRepository,
     );
 

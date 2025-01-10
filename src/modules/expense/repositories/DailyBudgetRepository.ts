@@ -5,6 +5,19 @@ import { prisma } from "../../../shared/prisma/PrismaService";
 import { isSameDay } from "date-fns";
 
 class DailyBudgetRepository implements IDailyBudgetRepository {
+  async ajustValue(id: number, value: number): Promise<void> {
+    await prisma.dailyBudget.update({
+      where: {
+        id,
+      },
+      data: {
+        value: {
+          increment: value,
+        },
+      },
+    });
+  }
+
   async create(data: DailyBudgetDTOType): Promise<DailyBudget> {
     const dailyBudget = await prisma.dailyBudget.create({
       data,

@@ -8,10 +8,12 @@ import { isAuthenticate } from "../../middlewares/isAuthenticate";
 import { CreateExpenseFactory } from "../../../../modules/expense/factories/CreateExpenseFactory";
 import { ShowExpensesFactory } from "../../../../modules/expense/factories/ShowExpensesFactory";
 import { UpdateExpenseFactory } from "../../../../modules/expense/factories/UpdateExpenseFactory";
+import { DeleteExpenseFactory } from "../../../../modules/expense/factories/DeleteExpenseFactory";
 
 const createExpenseController = CreateExpenseFactory.create();
 const showExpensesFactory = ShowExpensesFactory.create();
 const updateExpenseController = UpdateExpenseFactory.create();
+const deleteExpenseController = DeleteExpenseFactory.create();
 export async function expenseRoutes(app: FastifyInstance) {
   app.post(
     "/",
@@ -74,6 +76,25 @@ export async function expenseRoutes(app: FastifyInstance) {
     preHandler: [isAuthenticate],
     handler: async (req, reply) => {
       return updateExpenseController.handle(req, reply);
+    },
+  });
+
+  app.delete("/:id", {
+    schema: {
+      tags: ["Expense"],
+      description: "Delete expense",
+      params: z.object({ id: z.string() }),
+      response: {
+        200: z.null(),
+        404: z.object({
+          status: z.string(),
+          message: z.literal("Expense not found"),
+        }),
+      },
+    },
+    preHandler: [isAuthenticate],
+    handler: async (req, reply) => {
+      return deleteExpenseController.handle(req, reply);
     },
   });
 }

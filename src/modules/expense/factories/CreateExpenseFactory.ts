@@ -2,8 +2,11 @@ import { UserRepository } from "../../user/repositories/UserRepository";
 import { CategoryRepository } from "../repositories/CategoryRepository";
 import { DailyBudgetRepository } from "../repositories/DailyBudgetRepository";
 import { ExpenseRepository } from "../repositories/ExpenseRepository";
-import { CreateExpenseController } from "../useCases/createExpense.ts/CreateExpenseController";
-import { CreateExpenseUseCase } from "../useCases/createExpense.ts/CreateExpenseUseCase";
+import { DailyBudgetValueService } from "../services/DailyBudgetValueService";
+import { UserBalanceService } from "../services/UserBalanceService";
+import { ReturnDailyBudgetUseCase } from "../useCases/createDailyBudget/ReturnDailyBudgetUseCase";
+import { CreateExpenseController } from "../useCases/createExpense/CreateExpenseController";
+import { CreateExpenseUseCase } from "../useCases/createExpense/CreateExpenseUseCase";
 
 export class CreateExpenseFactory {
   static create() {
@@ -11,11 +14,21 @@ export class CreateExpenseFactory {
     const categoryRepository = new CategoryRepository();
     const userRepository = new UserRepository();
     const dailyBudgetRepository = new DailyBudgetRepository();
+    const userBalanceService = new UserBalanceService(userRepository);
+    const returnDailyBudgetUseCase = new ReturnDailyBudgetUseCase(
+      dailyBudgetRepository,
+      userRepository,
+    );
+    const dailyBudgetValueService = new DailyBudgetValueService(
+      dailyBudgetRepository,
+    );
+
     const createExpenseUseCase = new CreateExpenseUseCase(
       expenseRepository,
       categoryRepository,
-      userRepository,
-      dailyBudgetRepository,
+      userBalanceService,
+      dailyBudgetValueService,
+      returnDailyBudgetUseCase,
     );
     const createExpenseController = new CreateExpenseController(
       createExpenseUseCase,

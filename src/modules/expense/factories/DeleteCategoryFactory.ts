@@ -1,6 +1,6 @@
 import { CategoryRepository } from "../repositories/CategoryRepository";
-import { DeleteCategoryController } from "../useCases/deleteCategory.ts/DeleteCategoryController";
-import { DeleteCategoryUseCase } from "../useCases/deleteCategory.ts/DeleteCategoryUseCase";
+import { DeleteCategoryController } from "../useCases/deleteCategory/DeleteCategoryController";
+import { DeleteCategoryUseCase } from "../useCases/deleteCategory/DeleteCategoryUseCase";
 
 export class DeleteCategoryFactory {
   static create() {

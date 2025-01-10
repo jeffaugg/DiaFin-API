@@ -4,6 +4,19 @@ import { UserDTOType } from "../dtos/UserDTO";
 import { IUserRepository, UserFull } from "./interface/IUserRepository";
 
 class UserRepository implements IUserRepository {
+  async adjustBalance(userId: number, value: number): Promise<void> {
+    await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        balance: {
+          increment: value,
+        },
+      },
+    });
+  }
+
   async update(user: User): Promise<User> {
     return await prisma.user.update({
       where: {

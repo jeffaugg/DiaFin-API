@@ -8,6 +8,7 @@ interface IDailyBudgetRepository {
   findById(id: number, userId: number): Promise<DailyBudget | null>;
   list(userId: number): Promise<DailyBudget[]>;
   delete(id: number, userId: number): Promise<void>;
+  ajustValue(id: number, value: number): Promise<void>;
 }
 
 export { IDailyBudgetRepository };

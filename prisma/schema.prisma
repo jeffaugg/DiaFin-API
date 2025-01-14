@@ -25,6 +25,7 @@ model User {
   expense          Expense[]
   dailyBudget      DailyBudget[]
   category         Category[]
+  Income           Income[]
 
   @@map("users")
 }
@@ -55,6 +56,18 @@ model Expense {
   @@map("expenses")
 }
 
+model Income {
+  id          Int      @id @default(autoincrement())
+  value       Float
+  date        DateTime @default(now())
+  description String
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@unique([id, userId])
+  @@map("incomes")
+}
+
 model DailyBudget {
   id      Int       @id @default(autoincrement())
   date    DateTime
@@ -75,6 +88,6 @@ model Category {
   user        User      @relation(fields: [userId], references: [id])
   expense     Expense[]
 
-  @@unique([id, userId])
+  @@unique([name, userId])
   @@map("categories")
 }

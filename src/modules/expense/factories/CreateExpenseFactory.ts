@@ -2,7 +2,7 @@ import { UserRepository } from "../../user/repositories/UserRepository";
 import { CategoryRepository } from "../repositories/CategoryRepository";
 import { DailyBudgetRepository } from "../repositories/DailyBudgetRepository";
 import { ExpenseRepository } from "../repositories/ExpenseRepository";
-import { DailyBudgetValueService } from "../services/DailyBudgetValueService";
+import { DailyBudgetManagerService } from "../services/DailyBudgetManagerService";
 import { UserBalanceService } from "../services/UserBalanceService";
 import { ReturnDailyBudgetUseCase } from "../useCases/createDailyBudget/ReturnDailyBudgetUseCase";
 import { CreateExpenseController } from "../useCases/createExpense/CreateExpenseController";
@@ -19,7 +19,7 @@ export class CreateExpenseFactory {
       dailyBudgetRepository,
       userRepository,
     );
-    const dailyBudgetValueService = new DailyBudgetValueService(
+    const dailyBudgetValueService = new DailyBudgetManagerService(
       dailyBudgetRepository,
     );
 

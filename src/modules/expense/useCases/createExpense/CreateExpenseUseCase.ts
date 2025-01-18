@@ -5,14 +5,14 @@ import { AppError } from "../../../../config/erro/AppError";
 import { ICategoryRepository } from "../../repositories/interface/ICategoryRepository";
 import { ReturnDailyBudgetUseCase } from "../createDailyBudget/ReturnDailyBudgetUseCase";
 import { UserBalanceService } from "../../services/UserBalanceService";
-import { DailyBudgetValueService } from "../../services/DailyBudgetValueService";
+import { DailyBudgetManagerService } from "../../services/DailyBudgetManagerService";
 
 export class CreateExpenseUseCase {
   constructor(
     private expenseRepository: IExpenseRepository,
     private categoryRepository: ICategoryRepository,
     private userBalanceService: UserBalanceService,
-    private dailyBudgetValueService: DailyBudgetValueService,
+    private dailyBudgetValueService: DailyBudgetManagerService,
     private returnDailyBudgetUseCase: ReturnDailyBudgetUseCase,
   ) {}
 

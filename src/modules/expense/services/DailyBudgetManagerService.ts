@@ -1,7 +1,7 @@
 import { IDailyBudgetRepository } from "../repositories/interface/IDailyBudgetRepository";
 import { AppError } from "../../../config/erro/AppError";
 
-export class DailyBudgetManagerService {
+export class DailyBudgetAmountManagementService {
   constructor(private dailyBudgetRepository: IDailyBudgetRepository) {}
 
   async adjustValue(userId: number, value: number): Promise<number> {
